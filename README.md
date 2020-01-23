@@ -1,5 +1,6 @@
 # tropituna_SNA_AdptCapacity
-DOI to come
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3625596.svg)](https://doi.org/10.5281/zenodo.3625596)
 
 ## Description
 
