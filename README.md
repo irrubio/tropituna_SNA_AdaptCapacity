@@ -2,6 +2,8 @@
 
 [![DOI](https://zenodo.org/badge/233805004.svg)](https://zenodo.org/badge/latestdoi/233805004)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3625596.svg)](https://doi.org/10.5281/zenodo.3625596)
+
 ## Description
 
 This repository allows to replicate results from the article *Social connectivity and adaptive capacity strategies in large-scale fisheries*. The scripts in Figure 1 produce all figures from the manuscritp.
