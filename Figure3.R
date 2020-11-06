@@ -11,7 +11,7 @@ library(reshape2) #melt function
 library(RColorBrewer) #brewer.pal function
 
 #Open data
-data <- read.csv("data/values_Figure3_and_clusters.csv", check.names = F) 
+data <- read.csv("data/values_clusters.csv", check.names = F) 
 colnames(data)[1] <- "ID"
 
 #Reshape data
@@ -19,22 +19,11 @@ df <- melt(data, id = c("ID","cluster"))
 colnames(df)[3] <- "strategy"
 
 df$domain <- NA
-df$domain[df$strategy %in% c("1.Infrastructure",
-                           "2.Credit/savings",
-                           "3.Public funding")] <- "Assets"
-
-df$domain[df$strategy %in% c("4.Well connect",
-                             "5.Participation",
-                             "6.Governance")] <- "Organization"
-
-df$domain[df$strategy %in% c("7.Income diverse",
-                             "8.Dependence")] <- "Flexibility"
-
-df$domain[df$strategy %in% c("9.Knowledge",
-                             "10.Learning",
-                             "11.Assessment")] <- "Learning"
-
-df$domain[df$strategy %in% c("12.Ability react")] <- "Agency"
+df$domain[df$strategy %in% c("a", "b", "c")] <- "Assets"
+df$domain[df$strategy %in% c("d", "e", "f")] <- "Organization"
+df$domain[df$strategy %in% c("g", "h")] <- "Flexibility"
+df$domain[df$strategy %in% c("i", "j", "k")] <- "Learning"
+df$domain[df$strategy %in% c("l")] <- "Agency"
 
 #Calculate means
 df <- df %>%
@@ -58,7 +47,7 @@ col <- brewer.pal(n = 4, name = 'PuOr')
 
 #Create manuscript Figure3
 png("Figure3.png", 
-    width = 11, height = 4, units = 'in', res = 600)
+    width = 11, height = 4, units = 'in', res = 300)
 
 ggplot(df, aes(domain, value, fill = brea2))+
   geom_bar(stat = 'identity') +
