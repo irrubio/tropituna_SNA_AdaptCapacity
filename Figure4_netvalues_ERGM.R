@@ -10,6 +10,8 @@ library(igraph) #graph_from_data_frame function
 library(tidyverse) #mutate, summarise, %>%... functions
 library(ggraph) #ggraph function
 library(readxl) #read_xlsx function
+library(network) #network function
+library(ergm)
 
 #0.Normalize function I use within the script
 normalize_fun <- function(x) {
@@ -162,11 +164,33 @@ network_attributes$id <- paste("actor", 1:23, sep ="")
 colnames(network_attributes)[2] <- "type"
 colnames(network_attributes)[3] <- "ac.group"
 network_attributes <- network_attributes[, c(2:3,10,11)]
-network_attributes$id.type <- 1
-network_attributes$id.type[network_attributes$type == "Government or RFMO"] <- 2
-network_attributes$id.type[network_attributes$type == "NGOs, others"] <- 3
-network_attributes$id.type[network_attributes$type == "Research"] <- 4
+network_attributes$type.id <- 1
+network_attributes$type.id[network_attributes$type == "Government or RFMO"] <- 2
+network_attributes$type.id[network_attributes$type == "NGOs, others"] <- 3
+network_attributes$type.id[network_attributes$type == "Research"] <- 4
 
 #create matrix
+net <- network(as.matrix(read.csv("data/network_matrix.csv", row.names=1, stringsAsFactors = FALSE)), directed = TRUE)
+att <- network_attributes
+net%v%"type" <- att$type.id
+net%v%"ac.group" <- att$ac.group
+net%v%"interview" <- att$interview
 
 #Model
+mod <- ergm(net ~ edges + gwesp(decay = 0.6, fixed = T) + 
+              gwidegree(0.6, fixed = T) +
+              nodematch("ac.group", diff = F) + 
+              nodefactor("ac.group", base = 1) + 
+              nodematch("type", diff = F) + 
+              nodefactor("type", base = 1) + 
+              nodefactor("interview", base = 1) + 
+              isolates, 
+            control = control.ergm(MCMC.burnin = 1500000, MCMC.interval = 3500, 
+                                   MCMC.samplesize = 10000, MCMLE.maxit = 25))
+
+summary(mod)
+#saveRDS(mod, "mod.rds")
+
+#Diagnostics
+mcmc.diagnostics(mod)
+plot(gof(mod))
