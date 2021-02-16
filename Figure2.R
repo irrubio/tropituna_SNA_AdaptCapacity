@@ -1,5 +1,5 @@
 #### Description: this script produces manuscript Figure2 and data used
-#### in scripts "Figure3", "Figure4" and "Network_values"
+#### in scripts "Figure3" and "Figure4_netvalues_ERGM"
 #### INPUT: "data.xlsx" 
 #### OUTPUT: "values_clusters.csv" and manuscript Figure2
 #### Date: 13/01/2020
