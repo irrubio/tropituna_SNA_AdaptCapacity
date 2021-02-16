@@ -17,6 +17,22 @@ library(dendextend) #color_branches function
 AC <- read_xlsx("data/data.xlsx", sheet = 1)
 AC$AC_strategy <- as.factor(AC$AC_strategy)
 
+AC_vars <- c("a) Infrastructure", #1
+             "b) Credit/savings", #2
+             "c) Public funding", #3
+             "d) Well connect", #4
+             "e) Participation", #5
+             "f) Governance", #6
+             "g) Income diverse", #7
+             "h) Dependence", #8
+             "i) Knowledge", #9
+             "j) Learning", #10
+             "k) Assessment", #11
+             "l) Ability react" #12
+)
+
+levels(AC$AC_strategy) <- AC_vars
+
 #Calculate mean by organization
 data <- AC %>%
   group_by(`ID`, AC_strategy) %>%
@@ -39,7 +55,7 @@ for(j in 1:dim(m)[2]){
 }
 
 m <- as.data.frame(t(m))
-colnames(m) <- letters[1:12]#levels(AC$AC_strategy)
+colnames(m) <- AC_vars #letters[1:12]
 
 #Change class of columns
 cols = c(1:component_num)
@@ -78,7 +94,7 @@ m2[m2 > 4 & m2 <= 5] <- 4
 
 #Create manuscript Figure2
 png("Figure2.png", 
-    width = 10, height = 5, units = 'in', res = 300)
+    width = 10, height = 6, units = 'in', res = 300)
 Heatmap(m2, name = "mat", 
         cluster_columns = FALSE,
         cluster_rows = rev(dend_r), 
@@ -97,7 +113,7 @@ Heatmap(m2, name = "mat",
         row_names_gp = gpar(fontsize = 14),
         column_names_side = "top",
         row_names_side = "left",
-        column_names_rot = 360, column_names_centered = T
+        column_names_rot = 45
 )
 dev.off()
 
