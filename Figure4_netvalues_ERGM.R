@@ -191,6 +191,6 @@ mod <- ergm(net ~ edges + gwesp(decay = 0.6, fixed = T) +
 summary(mod)
 #saveRDS(mod, "mod.rds")
 
-#Diagnostics
+#8. Diagnostics. Appendix 2####
 mcmc.diagnostics(mod)
 plot(gof(mod))
